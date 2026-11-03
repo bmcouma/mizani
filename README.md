@@ -83,9 +83,9 @@ The current frontend is plain HTML with native ES modules. A Django integration 
 
 The `.github/workflows/pages.yml` workflow builds and deploys the static site to GitHub Pages on pushes to `main` and on manual workflow dispatch. It uses GitHub's Pages artifact deployment and copies only `index.html`, `robots.txt`, `sitemap.xml`, and the required CSS, image, JavaScript, and Bootstrap assets into the artifact. Development instructions, source TypeScript, local references, and dependencies are not part of the published artifact.
 
-The repository owner must enable Pages with **GitHub Actions** as the build and deployment source in the repository's **Settings → Pages**. The workflow requires the repository's Actions permissions to allow Pages deployment. No custom domain is configured.
+GitHub Pages is enabled with **GitHub Actions** as the build and deployment source. The workflow requires the repository's Actions permissions to allow Pages deployment. No custom domain is configured.
 
-Once enabled, deployments use `https://bmcouma.github.io/mizani/`. The page uses paths relative to the project root so assets work under `/mizani/`; canonical and social metadata, `robots.txt`, and the sitemap use the full project-site URL.
+The live project site is `https://bmcouma.github.io/mizani/`. The page uses paths relative to the project root so assets work under `/mizani/`; canonical and social metadata, `robots.txt`, and the sitemap use the full project-site URL. The latest deployment was verified from the live URL and the GitHub Actions run.
 
 ## Other static deployment options
 
@@ -96,7 +96,7 @@ All deployment options serve the repository's static files. Install/build only w
 | Netlify | `npm run build` | `.` | Set the custom domain in **Domain management** and add the DNS records Netlify provides. |
 | Cloudflare Pages | `npm run build` | `.` | Choose **Direct Upload** or connect the repository; set the production domain under **Custom domains**. |
 | Vercel | `npm run build` | `.` | Select **Other** as the framework preset and set the output directory to `.`; configure the domain in project settings. |
-| GitHub Pages | `npm run typecheck && npm run build` in the workflow | Allowlisted `_site/` artifact | The workflow is configured in `.github/workflows/pages.yml`; enable GitHub Actions under **Settings → Pages**. |
+| GitHub Pages | `npm run typecheck && npm run build` in the workflow | Allowlisted `_site/` artifact | Configured in `.github/workflows/pages.yml`; Pages is enabled with GitHub Actions. |
 
 For each host:
 

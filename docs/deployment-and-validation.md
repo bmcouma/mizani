@@ -4,9 +4,10 @@
 
 - The project-site URL is `https://bmcouma.github.io/mizani/`; keep the `/mizani/` base path in canonical, Open Graph, Twitter, sitemap, and runtime configuration.
 - `.github/workflows/pages.yml` builds the TypeScript and assembles an allowlisted `_site/` artifact containing only the public page, SEO files, and required static assets.
-- Enable GitHub Pages with **GitHub Actions** as the deployment source in repository **Settings → Pages**. No custom domain is configured.
+- GitHub Pages is enabled with **GitHub Actions** as the deployment source. The Pages API reports `build_type: workflow`. No custom domain is configured.
 - The workflow triggers on pushes to `main` and can also be started manually.
 - `reference/` and `AGENTS.md` are excluded from Git. The Pages artifact is assembled from an explicit allowlist, so project docs, tests, and source references are not published.
+- The live site is available at [https://bmcouma.github.io/mizani/](https://bmcouma.github.io/mizani/). The initial deploy attempt exposed that Pages had not yet been enabled; after enabling it, workflow run [#3](https://github.com/bmcouma/mizani/actions/runs/41663962243) completed successfully.
 
 ## Before launch
 
@@ -59,9 +60,12 @@ Complete this report after running the build and interaction checks. Record actu
 | `npm install` | Passed; 0 vulnerabilities reported |
 | `npm run typecheck` | Passed |
 | `npm run build` | Passed |
-| Demo, reduced motion, navigation, FAQ, form fallback | Passed in the shared browser preview: mobile menu opens/closes, Escape restores focus, nav links close the menu, CTA navigates, demo completes, FAQ expands, invalid form is rejected, and offline fallback is explicit |
-| Responsive viewport checks | Passed without document horizontal overflow at 360, 390, 768, 1024, and 1440 CSS pixels |
-| SEO metadata / sitemap / robots | Project-site URLs verified as `https://bmcouma.github.io/mizani/`; required asset paths are relative to the project-site root |
+| GitHub Actions build and deployment | Passed; run #3 built, uploaded the Pages artifact, and deployed it |
+| Live homepage and assets | HTTP 200; canonical and project-base paths verified; CSS, JavaScript modules, Bootstrap, fonts, favicon, Open Graph image, robots.txt, and sitemap.xml loaded/returned successfully |
+| Demo, reduced motion, navigation, FAQ, form fallback | Passed on the live site: mobile menu opens/closes, Escape restores focus, nav links close the menu, CTA navigates, demo completes, FAQ expands, invalid form is rejected, and offline fallback is explicit |
+| Responsive viewport checks | Passed on the live site without document horizontal overflow at 360, 390, 768, 1024, and 1440 CSS pixels |
+| Browser console/network | No browser console errors, page errors, or failed requests observed in the live interaction pass |
+| SEO metadata / sitemap / robots | Project-site canonical and social URLs use `https://bmcouma.github.io/mizani/`; favicon, Open Graph image, robots.txt, and sitemap.xml returned HTTP 200 |
 | Lighthouse | Not run |
 
-The mobile overflow found during deployment checks was caused by Bootstrap grid gutters extending beyond the narrow viewport. The small-screen container clipping rule in `static/css/sections.css` removes document-level horizontal overflow while retaining the existing layout. An initial browser run had stale cached CSS; the final checks used a cache-busted preview URL. The earlier failed automation attempts were test-harness issues (runner URL global unavailable and a click attempted on a collapsed, hidden menu link); the corrected interaction sequence passed.
+The mobile overflow found during deployment checks was caused by Bootstrap grid gutters extending beyond the narrow viewport. The small-screen container clipping rule in `static/css/sections.css` removes document-level horizontal overflow while retaining the existing layout. Initial browser automation attempts included timing/scroll issues; the final checks waited for transitions and were completed against the live deployment. No test suite is configured in the project; VS Code test discovery also reported no registered test controller.

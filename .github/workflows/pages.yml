@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Check TypeScript
+        run: npm run typecheck
+      - name: Build TypeScript
+        run: npm run build
+      - name: Assemble public site
+        run: |
+          mkdir -p _site/static/css _site/static/img _site/static/js/modules _site/static/vendor
+          cp index.html robots.txt sitemap.xml _site/
+          cp -R static/css/. _site/static/css/
+          cp -R static/img/. _site/static/img/
+          cp -R static/vendor/. _site/static/vendor/
+          cp static/js/config.js static/js/main.js _site/static/js/
+          cp static/js/modules/demo.js static/js/modules/nav.js static/js/modules/reveal.js static/js/modules/waitlist.js _site/static/js/modules/
+          touch _site/.nojekyll
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

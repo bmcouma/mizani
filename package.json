@@ -1,0 +1,14 @@
+{
+  "name": "mizani-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static Mizani concept and customer validation website",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

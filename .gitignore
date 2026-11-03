@@ -1,0 +1,11 @@
+node_modules/
+_site/
+reference/
+AGENTS.md
+.env
+.env.*
+!.env.example
+*.log
+*.map
+.DS_Store
+Thumbs.db
